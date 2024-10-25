@@ -115,7 +115,7 @@ class TaskService:
 
     async def update_task(self, task_data: TaskUpdate, task_id: int, user_id: int):
         # Check if the task exists and is created by the current user (user_id)
-        task = await self.task_repository.get_task_by_id(task_id)
+        task = await self.task_repository.get_task_by_id(task_id, user_id=user_id)
         
         # Ensure that the task was created by the current user
         
@@ -123,7 +123,7 @@ class TaskService:
             raise HTTPException(status_code=404, detail="Task not found")
         
         # Update the task via the repository
-        updated_task = await self.task_repository.update_task(task_data, task_id)
+        updated_task = await self.task_repository.update_task(task_data, task_id, user_id)
         
         # Fetch the user email from the repository
         creator_email = await self.task_repository.get_user_email(user_id)

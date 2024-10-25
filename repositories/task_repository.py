@@ -19,6 +19,8 @@ class TaskRepository:
             date_time=datetime.utcnow(),
             created_by=created_by
         )
+        print("Creating task with date_time:", new_task.date_time)
+        
         self.db.add(new_task)
         await self.db.commit()
         await self.db.refresh(new_task)
@@ -49,9 +51,9 @@ class TaskRepository:
         return result.scalars().all()
 
 
-    async def update_task(self, task_data: TaskUpdate, task_id: int):
+    async def update_task(self, task_data: TaskUpdate, task_id: int, user_id: int):
         # Fetch the task to be updated
-        task = await self.get_task_by_id(task_id)
+        task = await self.get_task_by_id(task_id, user_id)
         
         # Update task fields with the new data
         task.name = task_data.name
